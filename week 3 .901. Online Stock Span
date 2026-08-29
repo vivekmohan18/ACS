@@ -1,0 +1,29 @@
+class StockSpanner {
+    private int[] prices;
+    private int[] spans;
+    private int index;
+
+    public StockSpanner() {
+        // Maximum capacity based on constraint of 10^4 calls
+        prices = new int[10005];
+        spans = new int[10005];
+        index = 0;
+    }
+    
+    public int next(int price) {
+        int span = 1;
+        int prevIndex = index - 1;
+        
+        // Skip backwards by taking advantage of pre-calculated span lengths
+        while (prevIndex >= 0 && prices[prevIndex] <= price) {
+            span += spans[prevIndex];
+            prevIndex -= spans[prevIndex];
+        }
+        
+        prices[index] = price;
+        spans[index] = span;
+        index++;
+        
+        return span;
+    }
+}
