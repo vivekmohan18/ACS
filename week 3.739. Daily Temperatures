@@ -1,0 +1,25 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] answer = new int[n];
+        // Using Deque as a stack for better performance than java.util.Stack
+        Deque<Integer> stack = new ArrayDeque<>();
+        
+        for (int i = 0; i < n; i++) {
+            // Pop indices from the stack while the current temperature 
+            // is warmer than the temperature at the index on top of stack
+            while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
+                int prevIndex = stack.pop();
+                answer[prevIndex] = i - prevIndex;
+            }
+            // Push current day's index onto stack
+            stack.push(i);
+        }
+        
+        // Any remaining indices in the stack default to 0 in the answer array
+        return answer;
+    }
+}
