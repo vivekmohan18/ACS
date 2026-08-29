@@ -1,0 +1,26 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+class Solution {
+    public boolean isValid(String s) {
+        Deque<Character> stack = new ArrayDeque<>();
+        
+        for (char c : s.toCharArray()) {
+            // Push expected closing bracket onto the stack
+            if (c == '(') {
+                stack.push(')');
+            } else if (c == '{') {
+                stack.push('}');
+            } else if (c == '[') {
+                stack.push(']');
+            } 
+            // If it's a closing bracket, check against top of stack
+            else if (stack.isEmpty() || stack.pop() != c) {
+                return false;
+            }
+        }
+        
+        // Valid only if all opened brackets were matched and popped
+        return stack.isEmpty();
+    }
+}
