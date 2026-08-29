@@ -1,0 +1,38 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        boolean[] toRemove = new boolean[s.length()];
+
+        // Phase 1: Identify invalid parentheses
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                stack.push(i);
+            } else if (c == ')') {
+                if (!stack.isEmpty()) {
+                    stack.pop(); // Valid match found
+                } else {
+                    toRemove[i] = true; // Unmatched ')' must be removed
+                }
+            }
+        }
+
+        // Unmatched '(' remaining in stack must also be removed
+        while (!stack.isEmpty()) {
+            toRemove[stack.pop()] = true;
+        }
+
+        // Phase 2: Rebuild valid string
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (!toRemove[i]) {
+                sb.append(s.charAt(i));
+            }
+        }
+
+        return sb.toString();
+    }
+}
