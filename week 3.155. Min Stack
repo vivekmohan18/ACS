@@ -1,0 +1,49 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+class MinStack {
+    private Deque<Long> stack;
+    private long min;
+
+    public MinStack() {
+        stack = new ArrayDeque<>();
+    }
+    
+    public void push(int val) {
+        if (stack.isEmpty()) {
+            stack.push(0L);
+            min = val;
+        } else {
+            // Push the difference (val - min)
+            stack.push((long) val - min);
+            // If new val is smaller, update min
+            if (val < min) {
+                min = val;
+            }
+        }
+    }
+    
+    public void pop() {
+        long diff = stack.pop();
+        // If diff < 0, it means the popped element was the minimum,
+        // so restore the previous minimum: prevMin = min - diff
+        if (diff < 0) {
+            min = min - diff;
+        }
+    }
+    
+    public int top() {
+        long diff = stack.peek();
+        if (diff < 0) {
+            // If diff < 0, the current min IS the top value
+            return (int) min;
+        } else {
+            // Otherwise, top value = min + diff
+            return (int) (min + diff);
+        }
+    }
+    
+    public int getMin() {
+        return (int) min;
+    }
+}
